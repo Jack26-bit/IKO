@@ -1,0 +1,270 @@
+# IKO – Gamified Life Reminder App
+
+Build a mobile application called "IKO" that transforms real-life tasks and habits into a role-playing game (RPG).
+
+## Core Idea
+
+Users create real-life tasks such as:
+
+* Go to the gym
+* Study for 2 hours
+* Drink water
+* Read a book
+* Clean the room
+* Sleep before 11 PM
+
+Instead of simple reminders, these tasks become "Quests".
+
+When users complete quests, they earn:
+
+* Experience Points (XP)
+* Coins
+* Achievement Badges
+* Streak Bonuses
+* Character Progression
+
+The goal is to make productivity feel like playing a game.
+
+## Main Features
+
+### 1. User Profile
+
+* Username
+* Avatar
+* Level
+* XP Bar
+* Coin Balance
+* Current Streak
+* Total Quests Completed
+
+### 2. Quest System
+
+Users can:
+
+* Create quests
+* Edit quests
+* Delete quests
+* Mark quests as completed
+
+Each quest contains:
+
+* Title
+* Description
+* Difficulty (Easy, Medium, Hard)
+* XP Reward
+* Coin Reward
+* Due Time
+* Repeat Schedule
+
+### 3. Reminder System
+
+* Push notifications
+* Daily reminders
+* Custom reminder times
+* Missed-task notifications
+
+### 4. XP and Leveling
+
+Completing quests grants XP.
+
+Example:
+
+* Easy Quest = 25 XP
+* Medium Quest = 50 XP
+* Hard Quest = 100 XP
+
+Users level up automatically when enough XP is earned.
+
+### 5. Streak System
+
+Consecutive completion of habits increases streaks.
+
+Examples:
+
+* 3-day streak
+* 7-day streak
+* 30-day streak
+* 100-day streak
+
+Higher streaks provide bonus XP and coins.
+
+### 6. Achievement System
+
+Unlock achievements such as:
+
+* First Quest Completed
+* Gym Warrior
+* Study Master
+* Early Bird
+* Productivity Legend
+
+### 7. Boss Battle Mode
+
+Create virtual bosses representing bad habits.
+
+Examples:
+
+* Laziness Dragon
+* Procrastination King
+* Sleep Demon
+
+Each completed quest damages the boss.
+
+Example:
+
+* Gym Quest = 50 Damage
+* Study Quest = 40 Damage
+* Reading Quest = 20 Damage
+
+Defeating bosses grants rare rewards.
+
+### 8. Daily Challenges
+
+Generate random daily missions:
+
+* Complete 3 quests
+* Drink water 8 times
+* Walk 5,000 steps
+
+Rewards:
+
+* Extra XP
+* Coins
+* Achievement progress
+
+### 9. Statistics Dashboard
+
+Show:
+
+* Total XP earned
+* Quests completed
+* Weekly progress
+* Monthly progress
+* Habit consistency graphs
+* Level history
+
+### 10. Rewards Shop
+
+Users spend coins on:
+
+* Character skins
+* Avatars
+* Themes
+* Pets
+* Cosmetic upgrades
+
+## UI Style
+
+* Modern mobile design
+* RPG-inspired visuals
+* Dark mode by default
+* Animated XP bar
+* Achievement popups
+* Smooth transitions
+* Clean and intuitive navigation
+
+## Technology Requirements
+
+* Python
+* Kivy for mobile UI
+* SQLite database
+* Local notifications
+* Android support
+
+## Architecture
+
+Use a modular structure:
+
+* Authentication
+* Quest Management
+* XP Engine
+* Achievement Engine
+* Notification Service
+* Database Layer
+* Statistics Module
+
+## Goal
+
+Create an engaging productivity app that motivates users to complete real-life tasks by making them feel like game quests. The app should be fun, rewarding, visually appealing, and encourage long-term habit formation through RPG mechanics.
+### 11. Custom Task Creation
+
+Users can create unlimited custom quests based on their personal goals and daily responsibilities.
+
+Examples:
+
+* Go to the Gym
+* Complete Assignment
+* Learn Python for 1 Hour
+* Practice Guitar
+* Read 20 Pages
+* Walk the Dog
+* Call Parents
+* Clean Workspace
+* Meditate for 10 Minutes
+* Work on Side Project
+
+Each custom task should allow:
+
+* Task Title
+* Description
+* Category
+* Difficulty Level
+* XP Reward
+* Coin Reward
+* Due Date and Time
+* Recurring Schedule (Daily, Weekly, Monthly)
+* Reminder Notifications
+* Custom Icons or Emojis
+
+### Categories
+
+Users can create or select categories such as:
+
+* Fitness
+* Study
+* Work
+* Health
+* Personal Growth
+* Finance
+* Relationships
+* Hobbies
+* Custom Categories
+
+### Dynamic Reward System
+
+The app should automatically suggest rewards based on difficulty and estimated completion time.
+
+Example:
+
+* Easy Task → 20 XP, 10 Coins
+* Medium Task → 50 XP, 25 Coins
+* Hard Task → 100 XP, 50 Coins
+* Epic Task → 250 XP, 100 Coins
+
+Users can also manually customize rewards.
+
+### Quest Chains
+
+Users can combine multiple tasks into a larger mission.
+
+Example:
+
+Mission: Become Fit
+
+* Go to Gym
+* Drink 3L Water
+* Walk 10,000 Steps
+* Sleep Before 11 PM
+
+Completing all sub-tasks grants a bonus reward.
+
+### Smart Flexibility
+
+The app should support both:
+
+* Habit-based recurring quests
+* One-time tasks
+
+This allows users to manage daily habits, work assignments, university projects, personal goals, and long-term challenges in one place.
+
+The system should be scalable so users can create hundreds of custom tasks without limitations.

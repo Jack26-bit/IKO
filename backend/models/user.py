@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text
 from sqlalchemy.sql import func
 from database.database import Base
 
@@ -21,7 +21,7 @@ class User(Base):
 
     
     # Profile
-    avatar_url = Column(String, nullable=True)
+    avatar_url = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())

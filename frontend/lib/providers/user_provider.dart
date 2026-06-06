@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user.dart';
 import '../core/api_service.dart';
+import '../core/auth_service.dart';
 
 class UserNotifier extends AsyncNotifier<User> {
   @override
@@ -15,6 +16,42 @@ class UserNotifier extends AsyncNotifier<User> {
   }
 
   Future<void> refreshUser() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() => _fetchUser());
+  }
+
+  Future<User> register({
+    required String email,
+    required String username,
+    required String password,
+  }) async {
+    final response = await apiService.client.post('/users/register', data: {
+      'email': email,
+      'username': username,
+      'password': password,
+    });
+    final user = User.fromJson(response.data);
+    await AuthService.saveUserId(user.id);
+    state = AsyncData(user);
+    return user;
+  }
+
+  Future<User> login({
+    required String email,
+    required String password,
+  }) async {
+    final response = await apiService.client.post('/users/login', data: {
+      'email': email,
+      'password': password,
+    });
+    final user = User.fromJson(response.data);
+    await AuthService.saveUserId(user.id);
+    state = AsyncData(user);
+    return user;
+  }
+
+  Future<void> logout() async {
+    await AuthService.clearSession();
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => _fetchUser());
   }

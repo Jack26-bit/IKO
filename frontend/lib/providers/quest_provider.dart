@@ -63,6 +63,31 @@ class QuestNotifier extends AsyncNotifier<List<Quest>> {
     }
   }
 
+  Future<void> logActivity({
+    required String title,
+    String? description,
+    required String category,
+    required int xpReward,
+  }) async {
+    try {
+      final response = await apiService.client.post('/quests/', data: {
+        'title': title,
+        'description': description,
+        'category': category,
+        'difficulty': 'medium',
+        'xp_reward': xpReward,
+      });
+      final newQuest = Quest.fromJson(response.data);
+
+      if (state.hasValue) {
+        state = AsyncData([...state.value!, newQuest]);
+      }
+    } catch (e) {
+      ref.invalidateSelf();
+      rethrow;
+    }
+  }
+
   Future<void> deleteQuest(int questId) async {
     try {
       await apiService.client.delete('/quests/$questId');

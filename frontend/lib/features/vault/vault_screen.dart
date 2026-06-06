@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../dashboard/sidebar_drawer.dart';
+import '../../widgets/menu_drawer_button.dart';
+import '../../widgets/avatar_image.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/quest_provider.dart';
 import '../../models/quest.dart';
-import 'dart:io';
-
 class VaultScreen extends ConsumerStatefulWidget {
   const VaultScreen({super.key});
 
@@ -25,11 +24,12 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
     return Scaffold(
       backgroundColor: IkoTheme.surface,
       drawer: const SidebarDrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: userAsync.when(
+      body: Builder(
+        builder: (scaffoldContext) => SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: userAsync.when(
               loading: () => const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
               error: (err, st) => Center(child: Text('Error: $err')),
               data: (user) {
@@ -59,7 +59,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const SizedBox(height: 16),
-                        _buildTopAppBar(context),
+                        _buildTopAppBar(scaffoldContext),
                         const SizedBox(height: 32),
                         _buildProfileSection(user),
                         const SizedBox(height: 32),
@@ -74,6 +74,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
                   },
                 );
               },
+              ),
             ),
           ),
         ),
@@ -85,20 +86,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
   Widget _buildTopAppBar(BuildContext context) {
     return Row(
       children: [
-        GestureDetector(
-          onTap: () {
-            Scaffold.of(context).openDrawer();
-          },
-          child: Container(
-            width: 32,
-            height: 32,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: IkoTheme.surfaceContainer,
-            ),
-            child: const Icon(Icons.person, size: 20, color: IkoTheme.textSecondary),
-          ),
-        ),
+        const MenuDrawerButton(size: 32),
         const SizedBox(width: 8),
         const Text(
           'IKO',
@@ -119,21 +107,12 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
         Stack(
           alignment: Alignment.bottomRight,
           children: [
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: IkoTheme.primary, width: 2),
-                color: IkoTheme.surfaceContainerLowest,
-              ),
-              child: ClipOval(
-                child: user.avatarUrl != null && user.avatarUrl.isNotEmpty
-                    ? (kIsWeb 
-                        ? Image.network(user.avatarUrl, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 80, color: IkoTheme.textSecondary))
-                        : Image.file(File(user.avatarUrl), fit: BoxFit.cover, errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 80, color: IkoTheme.textSecondary)))
-                    : const Icon(Icons.person, size: 80, color: IkoTheme.textSecondary),
-              ),
+            AvatarImage(
+              imageUrl: user.avatarUrl,
+              size: 120,
+              fallbackIconSize: 80,
+              borderColor: IkoTheme.primary,
+              borderWidth: 2,
             ),
             Container(
               width: 32,

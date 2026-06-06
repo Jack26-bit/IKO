@@ -4,6 +4,7 @@ import '../../core/theme.dart';
 import '../dashboard/dashboard_screen.dart';
 import 'dart:ui';
 import '../dashboard/sidebar_drawer.dart';
+import '../../widgets/menu_drawer_button.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/quest_provider.dart';
 
@@ -23,11 +24,12 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
     return Scaffold(
       backgroundColor: IkoTheme.surface,
       drawer: const SidebarDrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: userAsync.when(
+      body: Builder(
+        builder: (scaffoldContext) => SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: userAsync.when(
               loading: () => const Center(child: Padding(padding: EdgeInsets.only(top: 100), child: CircularProgressIndicator())),
               error: (err, st) => Center(child: Text('Error: $err')),
               data: (user) {
@@ -55,7 +57,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16),
-                        _buildTopAppBar(context),
+                        _buildTopAppBar(scaffoldContext),
                         const SizedBox(height: 24),
                         const Text(
                           'Analytics Overview',
@@ -96,6 +98,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
                   },
                 );
               },
+              ),
             ),
           ),
         ),
@@ -107,20 +110,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
   Widget _buildTopAppBar(BuildContext context) {
     return Row(
       children: [
-        GestureDetector(
-          onTap: () {
-            Scaffold.of(context).openDrawer();
-          },
-          child: Container(
-            width: 32,
-            height: 32,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: IkoTheme.surfaceContainer,
-            ),
-            child: const Icon(Icons.person, size: 20, color: IkoTheme.textSecondary),
-          ),
-        ),
+        const MenuDrawerButton(size: 32),
         const SizedBox(width: 8),
         const Text(
           'IKO',

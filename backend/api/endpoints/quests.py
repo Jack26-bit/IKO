@@ -8,20 +8,10 @@ from models.quest import Quest
 from models.user import User
 from schemas.quest import QuestCreate, QuestResponse, QuestUpdate
 from services.rpg_engine import add_xp_to_user, add_coins, update_streak
+from api.deps import get_current_user
 
 
 router = APIRouter()
-
-# Mock Auth Dependency for Phase 2
-def get_current_user(db: Session = Depends(get_db)) -> User:
-    user = db.query(User).first()
-    if not user:
-        # Create a default user if none exists
-        user = User(email="test@example.com", username="PlayerOne", hashed_password="hashed")
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    return user
 
 @router.get("/", response_model=List[QuestResponse])
 def get_quests(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):

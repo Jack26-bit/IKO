@@ -7,30 +7,36 @@ import 'log_activity_modal.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/quest_provider.dart';
 import 'sidebar_drawer.dart';
+import '../../widgets/menu_drawer_button.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userAsync = ref.watch(userProvider);
+    final streak = userAsync.value?.currentStreak ?? 0;
+
     return Scaffold(
       backgroundColor: IkoTheme.surface,
       drawer: const SidebarDrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                _buildTopAppBar(context),
-                const SizedBox(height: 32),
-                _buildHeroSection(context, ref),
-                const SizedBox(height: 32),
-                _buildActiveQuests(context, ref),
-                const SizedBox(height: 32),
-              ],
+      body: Builder(
+        builder: (scaffoldContext) => SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  _buildTopAppBar(scaffoldContext, streak),
+                  const SizedBox(height: 32),
+                  _buildHeroSection(context, ref),
+                  const SizedBox(height: 32),
+                  _buildActiveQuests(context, ref),
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
           ),
         ),
@@ -39,24 +45,11 @@ class DashboardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTopAppBar(BuildContext context) {
+  Widget _buildTopAppBar(BuildContext context, int streak) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GestureDetector(
-          onTap: () {
-            Scaffold.of(context).openDrawer();
-          },
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: IkoTheme.surfaceContainerLowest,
-            ),
-            child: const Icon(Icons.person, color: IkoTheme.primary),
-          ),
-        ),
+        const MenuDrawerButton(size: 40),
         Row(
           children: [
             Container(
@@ -65,11 +58,11 @@ class DashboardScreen extends ConsumerWidget {
                 color: IkoTheme.surfaceContainerLowest,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.local_fire_department, color: Color(0xFFFF5252), size: 16),
-                  SizedBox(width: 4),
-                  Text('12', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Icon(Icons.local_fire_department, color: Color(0xFFFF5252), size: 16),
+                  const SizedBox(width: 4),
+                  Text('$streak', style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -278,9 +271,9 @@ class DashboardScreen extends ConsumerWidget {
                   children: [
                     const Icon(Icons.local_fire_department_outlined, size: 32, color: IkoTheme.primary),
                     const SizedBox(height: 12),
-                    const Text(
-                      '12',
-                      style: TextStyle(
+                    Text(
+                      '${user.currentStreak}',
+                      style: const TextStyle(
                         fontFamily: 'Playfair Display',
                         fontSize: 28,
                         fontWeight: FontWeight.w700,

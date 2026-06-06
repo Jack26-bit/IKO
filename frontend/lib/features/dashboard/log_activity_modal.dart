@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme.dart';
 import '../../providers/quest_provider.dart';
-import '../../models/quest.dart';
 
 class _RecentActivity {
   final String title;
@@ -12,10 +11,17 @@ class _RecentActivity {
   const _RecentActivity({required this.title, required this.icon, required this.category, required this.duration});
 }
 
-class LogActivityModal extends ConsumerStatefulWidget {
-  const LogActivityModal({super.key});
+enum ActivityModalMode { logActivity, createQuest }
 
-  static void show(BuildContext context) {
+class LogActivityModal extends ConsumerStatefulWidget {
+  final ActivityModalMode mode;
+
+  const LogActivityModal({super.key, this.mode = ActivityModalMode.logActivity});
+
+  static void show(
+    BuildContext context, {
+    ActivityModalMode mode = ActivityModalMode.logActivity,
+  }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -23,7 +29,7 @@ class LogActivityModal extends ConsumerStatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) => const LogActivityModal(),
+      builder: (context) => LogActivityModal(mode: mode),
     );
   }
 
@@ -34,9 +40,12 @@ class LogActivityModal extends ConsumerStatefulWidget {
 class _LogActivityModalState extends ConsumerState<LogActivityModal> {
   String selectedCategory = 'Focus';
   String selectedDuration = '45m';
-  Quest? selectedQuest;
   double xpValue = 100;
   int selectedRecentIndex = -1;
+  bool _isSaving = false;
+
+  final _titleController = TextEditingController();
+  final _writeUpController = TextEditingController();
 
   final List<_RecentActivity> _recents = const [
     _RecentActivity(title: 'Deep Work', icon: Icons.center_focus_strong, category: 'Focus', duration: '1h'),
@@ -45,8 +54,28 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
   ];
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _writeUpController.dispose();
+    super.dispose();
+  }
+
+  String _resolveQuestTitle() {
+    final typed = _titleController.text.trim();
+    if (typed.isNotEmpty) return typed;
+    if (selectedRecentIndex >= 0 && selectedRecentIndex < _recents.length) {
+      return _recents[selectedRecentIndex].title;
+    }
+    return 'Logged Activity';
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final questsAsync = ref.watch(questProvider);
+    final questTitle = _resolveQuestTitle();
+    final isCreateQuest = widget.mode == ActivityModalMode.createQuest;
+    final saveLabel = isCreateQuest
+        ? 'CREATE QUEST  ·  $questTitle'
+        : 'SAVE  ·  $questTitle  ·  +${xpValue.round()} XP';
 
     return Padding(
       padding: EdgeInsets.only(
@@ -59,13 +88,12 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Log Activity',
-                    style: TextStyle(
+                  Text(
+                    isCreateQuest ? 'New Quest' : 'Log Activity',
+                    style: const TextStyle(
                       fontFamily: 'Playfair Display',
                       fontSize: 32,
                       fontWeight: FontWeight.w700,
@@ -80,9 +108,8 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               ),
               const SizedBox(height: 24),
 
-              // Active Quests
               const Text(
-                'LINK TO QUEST',
+                'QUEST TITLE',
                 style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 12,
@@ -92,48 +119,29 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                 ),
               ),
               const SizedBox(height: 12),
-              questsAsync.when(
-                loading: () => const CircularProgressIndicator(),
-                error: (e, st) => const Text('Failed to load quests'),
-                data: (quests) {
-                  final activeQuests = quests.where((q) => !q.isCompleted).toList();
-                  if (activeQuests.isEmpty) {
-                    return const Text('No active quests available to link.', style: TextStyle(color: IkoTheme.textSecondary));
-                  }
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: IkoTheme.surfaceContainerLowest,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE2E2E2)),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<Quest>(
-                        value: selectedQuest,
-                        isExpanded: true,
-                        hint: const Text('Select an active quest...'),
-                        items: activeQuests.map((quest) {
-                          return DropdownMenuItem<Quest>(
-                            value: quest,
-                            child: Text(quest.title),
-                          );
-                        }).toList(),
-                        onChanged: (Quest? newValue) {
-                          setState(() {
-                            selectedQuest = newValue;
-                            if (newValue != null) {
-                              xpValue = newValue.xpReward.toDouble();
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                  );
-                },
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  hintText: 'Name your activity or quest...',
+                  hintStyle: const TextStyle(color: IkoTheme.textSecondary),
+                  filled: true,
+                  fillColor: IkoTheme.surfaceContainerLowest,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Color(0xFFE2E2E2)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Color(0xFFE2E2E2)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: IkoTheme.primary),
+                  ),
+                ),
               ),
               const SizedBox(height: 32),
 
-              // Recents
               const Text(
                 'RECENTS',
                 style: TextStyle(
@@ -158,7 +166,7 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                             selectedRecentIndex = i;
                             selectedCategory = _recents[i].category;
                             selectedDuration = _recents[i].duration;
-                            selectedQuest = null; // Unlink quest if recent is tapped
+                            _titleController.text = _recents[i].title;
                           });
                         },
                         child: Container(
@@ -201,7 +209,6 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               ),
               const SizedBox(height: 32),
 
-              // Category
               const Text(
                 'CATEGORY',
                 style: TextStyle(
@@ -230,7 +237,6 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               ),
               const SizedBox(height: 32),
 
-              // Duration
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -289,7 +295,6 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               ),
               const SizedBox(height: 32),
 
-              // XP Range
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -332,11 +337,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                   thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
                 ),
                 child: Slider(
-                  value: xpValue,
+                  value: xpValue.clamp(0, 500),
                   min: 0,
                   max: 500,
-                  divisions: 20,
-                  onChanged: (v) => setState(() => xpValue = v),
+                  onChanged: (v) => setState(() => xpValue = v.roundToDouble()),
                 ),
               ),
               Row(
@@ -348,9 +352,8 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               ),
               const SizedBox(height: 32),
 
-              // Notes
               const Text(
-                'NOTES (Optional)',
+                'WRITE-UP',
                 style: TextStyle(
                   fontFamily: 'Geist',
                   fontSize: 12,
@@ -361,6 +364,7 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               ),
               const SizedBox(height: 12),
               TextField(
+                controller: _writeUpController,
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText: 'Brief reflections or outcomes...',
@@ -383,29 +387,47 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               ),
               const SizedBox(height: 32),
 
-              // Save Button
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (selectedQuest != null) {
-                      ref.read(questProvider.notifier).completeQuest(selectedQuest!.id);
-                    } else {
-                      // If no quest is linked, just create a new completed quest with the selected XP
-                      ref.read(questProvider.notifier).createQuest({
-                        'title': _recents.elementAtOrNull(selectedRecentIndex)?.title ?? 'Logged Activity',
-                        'xp_reward': xpValue.toInt(),
-                        'category': selectedCategory,
-                        'difficulty': 'medium',
-                      }).then((_) {
-                        // After creation, we ideally should mark it complete. 
-                        // To keep it simple, the backend creates uncompleted quests by default.
-                        // We will just let them use it as a log. For a full app, we'd add an endpoint to log past activities.
-                      });
-                    }
-                    Navigator.pop(context);
-                  },
+                  onPressed: _isSaving
+                      ? null
+                      : () async {
+                          setState(() => _isSaving = true);
+                          try {
+                            final title = _resolveQuestTitle();
+                            final description = _writeUpController.text.trim().isEmpty
+                                ? null
+                                : _writeUpController.text.trim();
+
+                            if (isCreateQuest) {
+                              await ref.read(questProvider.notifier).createQuest({
+                                'title': title,
+                                'description': description,
+                                'category': selectedCategory,
+                                'difficulty': 'medium',
+                                'xp_reward': xpValue.toInt(),
+                              });
+                            } else {
+                              await ref.read(questProvider.notifier).logActivity(
+                                title: title,
+                                description: description,
+                                category: selectedCategory,
+                                xpReward: xpValue.toInt(),
+                              );
+                            }
+                            if (context.mounted) Navigator.pop(context);
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Failed to save activity: $e')),
+                              );
+                            }
+                          } finally {
+                            if (mounted) setState(() => _isSaving = false);
+                          }
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: IkoTheme.primary,
                     foregroundColor: Colors.white,
@@ -414,15 +436,21 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                     ),
                     elevation: 0,
                   ),
-                  child: Text(
-                    'SAVE  ·  ${selectedQuest?.title ?? selectedCategory}  ·  +${xpValue.toInt()} XP',
-                    style: const TextStyle(
-                      fontFamily: 'Geist',
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1,
-                    ),
-                  ),
+                  child: _isSaving
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : Text(
+                          saveLabel,
+                          style: const TextStyle(
+                            fontFamily: 'Geist',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 16),

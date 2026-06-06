@@ -5,7 +5,9 @@ import '../dashboard/dashboard_screen.dart';
 import '../../providers/quest_provider.dart';
 import '../../models/quest.dart';
 import '../dashboard/sidebar_drawer.dart';
+import '../../widgets/menu_drawer_button.dart';
 import '../dashboard/log_activity_modal.dart';
+import '../../core/week_utils.dart';
 
 
 class QuestsScreen extends ConsumerStatefulWidget {
@@ -23,15 +25,16 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
     return Scaffold(
       backgroundColor: IkoTheme.surface,
       drawer: const SidebarDrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                _buildTopAppBar(context),
+      body: Builder(
+        builder: (scaffoldContext) => SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  _buildTopAppBar(scaffoldContext),
                 const SizedBox(height: 24),
                 const Text(
                   'Active Quests',
@@ -57,12 +60,13 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                   loading: () => const Center(child: CircularProgressIndicator()),
                   error: (err, stack) => Text('Error loading quests: $err'),
                   data: (quests) {
-                    final completedCount = quests.where((q) => q.isCompleted).length;
-                    
+                    final completedThisWeek = quests.where(isCompletedThisWeek).length;
+                    final totalQuests = quests.length;
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildWeeklyVelocityCard(completedCount, quests.length),
+                        _buildWeeklyVelocityCard(completedThisWeek, totalQuests),
                         const SizedBox(height: 32),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,7 +88,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                '$completedCount/${quests.length} Completed',
+                                '${quests.where((q) => q.isCompleted).length}/${quests.length} Completed',
                                 style: const TextStyle(
                                   fontFamily: 'Geist',
                                   fontSize: 10,
@@ -173,9 +177,9 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                   loading: () => const Center(child: CircularProgressIndicator()),
                   error: (err, stack) => Text('Error loading quests: $err'),
                   data: (quests) {
-                    final healthQuestsThisWeek = quests.where((q) => q.isCompleted && q.category == 'Health').length;
-                    final growthQuestsThisWeek = quests.where((q) => q.isCompleted && q.category == 'Growth').length;
-                    final focusQuestsThisWeek = quests.where((q) => q.isCompleted && q.category == 'Focus').length;
+                    final healthQuestsThisWeek = countCompletedThisWeek(quests, 'Health');
+                    final growthQuestsThisWeek = countCompletedThisWeek(quests, 'Growth');
+                    final focusQuestsThisWeek = countCompletedThisWeek(quests, 'Focus');
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,15 +194,16 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                   },
                 ),
 
-                const SizedBox(height: 32),
-              ],
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
           ),
         ),
       ),
       bottomNavigationBar: DashboardScreen.buildSharedBottomNav(context, 1),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => LogActivityModal.show(context),
+        onPressed: () => LogActivityModal.show(context, mode: ActivityModalMode.createQuest),
         backgroundColor: IkoTheme.primary,
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text('NEW QUEST', style: TextStyle(color: Colors.white, fontFamily: 'Geist', fontWeight: FontWeight.bold)),
@@ -209,20 +214,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
   Widget _buildTopAppBar(BuildContext context) {
     return Row(
       children: [
-        GestureDetector(
-          onTap: () {
-            Scaffold.of(context).openDrawer();
-          },
-          child: Container(
-            width: 32,
-            height: 32,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: IkoTheme.surfaceContainer,
-            ),
-            child: const Icon(Icons.person, size: 20, color: IkoTheme.textSecondary),
-          ),
-        ),
+        const MenuDrawerButton(size: 32),
         const SizedBox(width: 8),
         const Text(
           'IKO',
@@ -237,7 +229,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
     );
   }
 
-  Widget _buildWeeklyVelocityCard(int completedCount, int totalQuests) {
+  Widget _buildWeeklyVelocityCard(int completedThisWeek, int totalQuests) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -270,7 +262,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                '${(completedCount / (totalQuests == 0 ? 1 : totalQuests) * 100).toInt()}%',
+                '${(completedThisWeek / (totalQuests == 0 ? 1 : totalQuests) * 100).toInt()}%',
                 style: const TextStyle(
                   fontFamily: 'Playfair Display',
                   fontSize: 48,
@@ -292,7 +284,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
-              value: totalQuests == 0 ? 0 : completedCount / totalQuests,
+              value: totalQuests == 0 ? 0 : completedThisWeek / totalQuests,
               minHeight: 2,
               backgroundColor: const Color(0xFFE2E2E2),
               valueColor: const AlwaysStoppedAnimation<Color>(IkoTheme.primary),
@@ -312,27 +304,25 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
   }
 
   Widget _buildObjectiveCard(Quest quest) {
-    return GestureDetector(
-      onTap: () {
-        if (!quest.isCompleted) {
-          ref.read(questProvider.notifier).completeQuest(quest.id);
-        }
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: IkoTheme.surfaceContainerLowest,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Colors.transparent,
-            width: 0,
-          ),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: IkoTheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.transparent,
+          width: 0,
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AnimatedContainer(
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: quest.isCompleted
+                ? null
+                : () => ref.read(questProvider.notifier).completeQuest(quest.id),
+            child: AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               width: 24,
               height: 24,
@@ -349,6 +339,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                   ? const Icon(Icons.check, size: 14, color: Colors.white)
                   : null,
             ),
+          ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -400,8 +391,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                 ],
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

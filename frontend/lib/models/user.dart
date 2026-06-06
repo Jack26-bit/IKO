@@ -39,5 +39,9 @@ class User {
   }
 
   int get xpNeededForNextLevel => level * 100;
-  double get xpProgress => xp / xpNeededForNextLevel;
+  double get xpProgress {
+    final needed = xpNeededForNextLevel;
+    if (needed <= 0) return 0;
+    return (xp / needed).clamp(0.0, 1.0);
+  }
 }

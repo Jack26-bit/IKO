@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/notification_service.dart';
 import '../../core/theme.dart';
 import '../../providers/user_provider.dart';
 
@@ -44,8 +45,8 @@ class SidebarDrawer extends ConsumerWidget {
                     const SizedBox(height: 16),
                     Text(
                       user.username,
-                      style: const TextStyle(
-                        fontFamily: 'Playfair Display',
+                      style: TextStyle(
+                        fontFamily: IkoTheme.serifFamily,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: IkoTheme.primary,
@@ -68,8 +69,8 @@ class SidebarDrawer extends ConsumerWidget {
                     ),
                       child: Text(
                         'LVL ${user.level}',
-                        style: const TextStyle(
-                          fontFamily: 'Geist',
+                        style: TextStyle(
+                          fontFamily: IkoTheme.monoFamily,
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -90,25 +91,72 @@ class SidebarDrawer extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 children: [
                   _buildDrawerItem(
-                    icon: Icons.person_outline,
-                    title: 'Edit Profile',
+                    icon: Icons.dashboard_outlined,
+                    title: 'Focus',
                     onTap: () {
-                      Navigator.pop(context); // Close drawer
-                      // TODO: Navigate to Edit Profile if implemented
+                      Navigator.pop(context);
+                      context.go('/dashboard');
                     },
                   ),
                   _buildDrawerItem(
-                    icon: Icons.settings_outlined,
-                    title: 'Settings',
+                    icon: Icons.sports_esports_outlined,
+                    title: 'Quests',
                     onTap: () {
-                      Navigator.pop(context); // Close drawer
+                      Navigator.pop(context);
+                      context.go('/quests');
+                    },
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.shield_outlined,
+                    title: 'Vault',
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.go('/vault');
+                    },
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.insights_outlined,
+                    title: 'Growth',
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.go('/growth');
+                    },
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.emoji_events_outlined,
+                    title: 'Achievements',
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.go('/achievements');
+                    },
+                  ),
+                  const Divider(color: IkoTheme.hairline, height: 32, indent: 16, endIndent: 16),
+                  _buildDrawerItem(
+                    icon: Icons.notifications_active_outlined,
+                    title: 'Daily reflection · 8 PM',
+                    onTap: () async {
+                      Navigator.pop(context);
+                      await NotificationService.instance.requestPermission();
+                      await NotificationService.instance.scheduleDailyReflection(hour: 20, minute: 0);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Daily reflection scheduled for 20:00')),
+                        );
+                      }
+                    },
+                  ),
+                  _buildDrawerItem(
+                    icon: Icons.person_outline,
+                    title: 'Edit Profile',
+                    onTap: () {
+                      Navigator.pop(context);
                     },
                   ),
                   _buildDrawerItem(
                     icon: Icons.help_outline,
                     title: 'Help & Support',
                     onTap: () {
-                      Navigator.pop(context); // Close drawer
+                      Navigator.pop(context);
                     },
                   ),
                 ],
@@ -145,7 +193,7 @@ class SidebarDrawer extends ConsumerWidget {
       title: Text(
         title,
         style: TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: IkoTheme.sansFamily,
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: color,

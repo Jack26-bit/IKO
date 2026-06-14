@@ -131,10 +131,10 @@ class DashboardScreen extends ConsumerWidget {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
+                          Text(
                             'LEVEL',
                             style: TextStyle(
-                              fontFamily: 'Geist',
+                              fontFamily: IkoTheme.monoFamily,
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 1.5,
@@ -143,8 +143,8 @@ class DashboardScreen extends ConsumerWidget {
                           ),
                           Text(
                             '${user.level}',
-                            style: const TextStyle(
-                              fontFamily: 'Playfair Display',
+                            style: TextStyle(
+                              fontFamily: IkoTheme.serifFamily,
                               fontSize: 48,
                               fontWeight: FontWeight.w700,
                               height: 1.1,
@@ -156,10 +156,10 @@ class DashboardScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'Mastery Path',
                     style: TextStyle(
-                      fontFamily: 'Playfair Display',
+                      fontFamily: IkoTheme.serifFamily,
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: IkoTheme.primary,
@@ -197,10 +197,10 @@ class DashboardScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "TODAY'S XP",
                     style: TextStyle(
-                      fontFamily: 'Geist',
+                      fontFamily: IkoTheme.monoFamily,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.5,
@@ -213,7 +213,7 @@ class DashboardScreen extends ConsumerWidget {
                         TextSpan(
                           text: '350',
                           style: TextStyle(
-                            fontFamily: 'Playfair Display',
+                            fontFamily: IkoTheme.serifFamily,
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
                             color: IkoTheme.primary,
@@ -222,7 +222,7 @@ class DashboardScreen extends ConsumerWidget {
                         TextSpan(
                           text: ' xp',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: IkoTheme.sansFamily,
                             fontSize: 14,
                             color: IkoTheme.textSecondary,
                           ),
@@ -278,20 +278,20 @@ class DashboardScreen extends ConsumerWidget {
                   children: [
                     const Icon(Icons.local_fire_department_outlined, size: 32, color: IkoTheme.primary),
                     const SizedBox(height: 12),
-                    const Text(
+                    Text(
                       '12',
                       style: TextStyle(
-                        fontFamily: 'Playfair Display',
+                        fontFamily: IkoTheme.serifFamily,
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
                         color: IkoTheme.primary,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'DAY STREAK',
                       style: TextStyle(
-                        fontFamily: 'Geist',
+                        fontFamily: IkoTheme.monoFamily,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 1.5,
@@ -325,10 +325,10 @@ class DashboardScreen extends ConsumerWidget {
                       const Spacer(),
                       const Icon(Icons.add, size: 32, color: Colors.white),
                       const Spacer(),
-                      const Text(
+                      Text(
                         'LOG ACTIVITY',
                         style: TextStyle(
-                          fontFamily: 'Geist',
+                          fontFamily: IkoTheme.monoFamily,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1.5,
@@ -358,10 +358,10 @@ class DashboardScreen extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Active Quests',
               style: TextStyle(
-                fontFamily: 'Playfair Display',
+                fontFamily: IkoTheme.serifFamily,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: IkoTheme.primary,
@@ -369,10 +369,10 @@ class DashboardScreen extends ConsumerWidget {
             ),
             TextButton(
               onPressed: () => context.go('/quests'),
-              child: const Text(
+              child: Text(
                 'VIEW ALL',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -412,7 +412,7 @@ class DashboardScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: IkoTheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E2E2)), // surface-variant
+        border: Border.all(color: const IkoTheme.hairline), // surface-variant
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -462,8 +462,8 @@ class DashboardScreen extends ConsumerWidget {
                     const SizedBox(width: 8),
                     Text(
                       '${(progress * 100).toInt()}%',
-                      style: const TextStyle(
-                        fontFamily: 'Geist',
+                      style: TextStyle(
+                        fontFamily: IkoTheme.monoFamily,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: IkoTheme.textSecondary,
@@ -477,8 +477,8 @@ class DashboardScreen extends ConsumerWidget {
           const SizedBox(width: 16),
           Text(
             '+$xp XP',
-            style: const TextStyle(
-              fontFamily: 'Geist',
+            style: TextStyle(
+              fontFamily: IkoTheme.monoFamily,
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: IkoTheme.primary,
@@ -494,7 +494,7 @@ class DashboardScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          top: BorderSide(color: const Color(0xFFE2E2E2).withValues(alpha: 0.5)),
+          top: BorderSide(color: const IkoTheme.hairline.withValues(alpha: 0.5)),
         ),
       ),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -535,7 +535,7 @@ class DashboardScreen extends ConsumerWidget {
           Text(
             label,
             style: TextStyle(
-              fontFamily: 'Geist',
+              fontFamily: IkoTheme.monoFamily,
               fontSize: 10,
               fontWeight: FontWeight.w600,
               color: isActive ? IkoTheme.primary : IkoTheme.textSecondary,

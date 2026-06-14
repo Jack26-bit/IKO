@@ -71,10 +71,10 @@ class _ClassSelectionScreenState extends State<ClassSelectionScreen> {
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'ARCHETYPE SELECTION',
                     style: TextStyle(
-                      fontFamily: 'Geist',
+                      fontFamily: IkoTheme.monoFamily,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 2.0,
@@ -82,21 +82,21 @@ class _ClassSelectionScreenState extends State<ClassSelectionScreen> {
                     ),
                   ).animate().fadeIn(duration: 800.ms),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Choose Your Path',
                     style: TextStyle(
-                      fontFamily: 'Playfair Display',
+                      fontFamily: IkoTheme.serifFamily,
                       fontSize: 32,
                       fontWeight: FontWeight.w700,
                       color: IkoTheme.primary,
                     ),
                   ).animate(delay: 200.ms).fadeIn(duration: 800.ms),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Select the class that best aligns with your current life focus.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: IkoTheme.sansFamily,
                       fontSize: 16,
                       color: IkoTheme.textSecondary,
                     ),
@@ -152,8 +152,8 @@ class _ClassSelectionScreenState extends State<ClassSelectionScreen> {
                             const SizedBox(height: 16),
                             Text(
                               cls['title'],
-                              style: const TextStyle(
-                                fontFamily: 'Playfair Display',
+                              style: TextStyle(
+                                fontFamily: IkoTheme.serifFamily,
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
                                 color: IkoTheme.primary,
@@ -162,8 +162,8 @@ class _ClassSelectionScreenState extends State<ClassSelectionScreen> {
                             const SizedBox(height: 8),
                             Text(
                               cls['desc'],
-                              style: const TextStyle(
-                                fontFamily: 'Inter',
+                              style: TextStyle(
+                                fontFamily: IkoTheme.sansFamily,
                                 fontSize: 14,
                                 color: IkoTheme.textSecondary,
                               ),
@@ -174,8 +174,8 @@ class _ClassSelectionScreenState extends State<ClassSelectionScreen> {
                               children: [
                                 Text(
                                   cls['bonus'],
-                                  style: const TextStyle(
-                                    fontFamily: 'Geist',
+                                  style: TextStyle(
+                                    fontFamily: IkoTheme.monoFamily,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                     color: IkoTheme.textSecondary,

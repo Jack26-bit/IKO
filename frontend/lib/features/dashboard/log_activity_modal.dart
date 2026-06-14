@@ -63,10 +63,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Log Activity',
                     style: TextStyle(
-                      fontFamily: 'Playfair Display',
+                      fontFamily: IkoTheme.serifFamily,
                       fontSize: 32,
                       fontWeight: FontWeight.w700,
                       color: IkoTheme.primary,
@@ -81,10 +81,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               const SizedBox(height: 24),
 
               // Active Quests
-              const Text(
+              Text(
                 'LINK TO QUEST',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -105,7 +105,7 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                     decoration: BoxDecoration(
                       color: IkoTheme.surfaceContainerLowest,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE2E2E2)),
+                      border: Border.all(color: const IkoTheme.hairline),
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<Quest>(
@@ -134,10 +134,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               const SizedBox(height: 32),
 
               // Recents
-              const Text(
+              Text(
                 'RECENTS',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -169,7 +169,7 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                             color: isSelected ? IkoTheme.primary : IkoTheme.surfaceContainerLowest,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: isSelected ? IkoTheme.primary : const Color(0xFFE2E2E2),
+                              color: isSelected ? IkoTheme.primary : const IkoTheme.hairline,
                             ),
                           ),
                           child: Column(
@@ -184,7 +184,7 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                               Text(
                                 _recents[i].title.replaceAll(' ', '\n'),
                                 style: TextStyle(
-                                  fontFamily: 'Playfair Display',
+                                  fontFamily: IkoTheme.serifFamily,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
                                   height: 1.1,
@@ -202,10 +202,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               const SizedBox(height: 32),
 
               // Category
-              const Text(
+              Text(
                 'CATEGORY',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -234,10 +234,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'DURATION',
                     style: TextStyle(
-                      fontFamily: 'Geist',
+                      fontFamily: IkoTheme.monoFamily,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.5,
@@ -246,8 +246,8 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                   ),
                   Text(
                     selectedDuration,
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
+                    style: TextStyle(
+                      fontFamily: IkoTheme.sansFamily,
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: IkoTheme.primary,
@@ -276,7 +276,7 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                         child: Text(
                           duration,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: IkoTheme.sansFamily,
                             fontSize: 14,
                             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                             color: isSelected ? Colors.white : IkoTheme.textSecondary,
@@ -293,10 +293,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'XP REWARD',
                     style: TextStyle(
-                      fontFamily: 'Geist',
+                      fontFamily: IkoTheme.monoFamily,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.5,
@@ -311,8 +311,8 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                     ),
                     child: Text(
                       '+${xpValue.toInt()} XP',
-                      style: const TextStyle(
-                        fontFamily: 'Geist',
+                      style: TextStyle(
+                        fontFamily: IkoTheme.monoFamily,
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -349,10 +349,10 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
               const SizedBox(height: 32),
 
               // Notes
-              const Text(
+              Text(
                 'NOTES (Optional)',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -369,11 +369,11 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                   fillColor: IkoTheme.surfaceContainerLowest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFFE2E2E2)),
+                    borderSide: const BorderSide(color: IkoTheme.hairline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFFE2E2E2)),
+                    borderSide: const BorderSide(color: IkoTheme.hairline),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -416,8 +416,8 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
                   ),
                   child: Text(
                     'SAVE  ·  ${selectedQuest?.title ?? selectedCategory}  ·  +${xpValue.toInt()} XP',
-                    style: const TextStyle(
-                      fontFamily: 'Geist',
+                    style: TextStyle(
+                      fontFamily: IkoTheme.monoFamily,
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1,
@@ -444,13 +444,13 @@ class _LogActivityModalState extends ConsumerState<LogActivityModal> {
           color: isSelected ? IkoTheme.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? IkoTheme.primary : const Color(0xFFE2E2E2),
+            color: isSelected ? IkoTheme.primary : const IkoTheme.hairline,
           ),
         ),
         child: Text(
           title,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: IkoTheme.sansFamily,
             fontSize: 16,
             fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
             color: isSelected ? Colors.white : IkoTheme.primary,

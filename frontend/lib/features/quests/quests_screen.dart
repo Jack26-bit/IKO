@@ -5,7 +5,7 @@ import '../dashboard/dashboard_screen.dart';
 import '../../providers/quest_provider.dart';
 import '../../models/quest.dart';
 import '../dashboard/sidebar_drawer.dart';
-import '../dashboard/log_activity_modal.dart';
+import 'create_quest_sheet.dart';
 
 
 class QuestsScreen extends ConsumerStatefulWidget {
@@ -33,10 +33,10 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                 const SizedBox(height: 16),
                 _buildTopAppBar(context),
                 const SizedBox(height: 24),
-                const Text(
+                Text(
                   'Active Quests',
                   style: TextStyle(
-                    fontFamily: 'Playfair Display',
+                    fontFamily: IkoTheme.serifFamily,
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
                     color: IkoTheme.primary,
@@ -67,10 +67,10 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'Daily Objectives',
                               style: TextStyle(
-                                fontFamily: 'Geist',
+                                fontFamily: IkoTheme.monoFamily,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 letterSpacing: 1.5,
@@ -85,8 +85,8 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                               ),
                               child: Text(
                                 '$completedCount/${quests.length} Completed',
-                                style: const TextStyle(
-                                  fontFamily: 'Geist',
+                                style: TextStyle(
+                                  fontFamily: IkoTheme.monoFamily,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
                                   color: IkoTheme.primary,
@@ -97,7 +97,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          'Swipe left to delete a quest',
+                          'Swipe left to delete · Long-press to edit',
                           style: TextStyle(
                             fontSize: 11,
                             color: IkoTheme.textSecondary,
@@ -118,7 +118,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                                   color: const Color(0xFFFF4444),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: const Column(
+                                child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(Icons.delete_outline, color: Colors.white, size: 24),
@@ -126,7 +126,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                                     Text(
                                       'DELETE',
                                       style: TextStyle(
-                                        fontFamily: 'Geist',
+                                        fontFamily: IkoTheme.monoFamily,
                                         fontSize: 10,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.white,
@@ -158,10 +158,10 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                 ),
 
                 const SizedBox(height: 32),
-                const Text(
+                Text(
                   'Weekly Milestones',
                   style: TextStyle(
-                    fontFamily: 'Geist',
+                    fontFamily: IkoTheme.monoFamily,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 1.5,
@@ -198,10 +198,16 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
       ),
       bottomNavigationBar: DashboardScreen.buildSharedBottomNav(context, 1),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => LogActivityModal.show(context),
+        onPressed: () => QuestComposerSheet.show(context),
         backgroundColor: IkoTheme.primary,
         icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('NEW QUEST', style: TextStyle(color: Colors.white, fontFamily: 'Geist', fontWeight: FontWeight.bold)),
+        label: Text('NEW QUEST',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: IkoTheme.monoFamily,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.6,
+            )),
       ),
     );
   }
@@ -224,10 +230,10 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
           ),
         ),
         const SizedBox(width: 8),
-        const Text(
+        Text(
           'IKO',
           style: TextStyle(
-            fontFamily: 'Playfair Display',
+            fontFamily: IkoTheme.serifFamily,
             fontSize: 24,
             fontWeight: FontWeight.w700,
             color: IkoTheme.primary,
@@ -254,10 +260,10 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Weekly Velocity',
             style: TextStyle(
-              fontFamily: 'Geist',
+              fontFamily: IkoTheme.monoFamily,
               fontSize: 11,
               fontWeight: FontWeight.w600,
               letterSpacing: 1.5,
@@ -271,8 +277,8 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
             children: [
               Text(
                 '${(completedCount / (totalQuests == 0 ? 1 : totalQuests) * 100).toInt()}%',
-                style: const TextStyle(
-                  fontFamily: 'Playfair Display',
+                style: TextStyle(
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 48,
                   fontWeight: FontWeight.w700,
                   color: IkoTheme.primary,
@@ -294,7 +300,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
             child: LinearProgressIndicator(
               value: totalQuests == 0 ? 0 : completedCount / totalQuests,
               minHeight: 2,
-              backgroundColor: const Color(0xFFE2E2E2),
+              backgroundColor: const IkoTheme.hairline,
               valueColor: const AlwaysStoppedAnimation<Color>(IkoTheme.primary),
             ),
           ),
@@ -318,6 +324,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
           ref.read(questProvider.notifier).completeQuest(quest.id);
         }
       },
+      onLongPress: () => QuestComposerSheet.show(context, quest: quest),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         padding: const EdgeInsets.all(16),
@@ -325,8 +332,8 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
           color: IkoTheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Colors.transparent,
-            width: 0,
+            color: IkoTheme.hairline,
+            width: 1,
           ),
         ),
         child: Row(
@@ -341,7 +348,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                 shape: BoxShape.circle,
                 color: quest.isCompleted ? IkoTheme.primary : Colors.transparent,
                 border: Border.all(
-                  color: quest.isCompleted ? IkoTheme.primary : const Color(0xFFE2E2E2),
+                  color: quest.isCompleted ? IkoTheme.primary : const IkoTheme.hairline,
                   width: 2,
                 ),
               ),
@@ -378,7 +385,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
                         child: Text(
                           '${quest.xpReward}xp',
                           style: TextStyle(
-                            fontFamily: 'Geist',
+                            fontFamily: IkoTheme.monoFamily,
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                             color: quest.isCompleted ? Colors.white : IkoTheme.textSecondary,
@@ -412,7 +419,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
       decoration: BoxDecoration(
         color: IkoTheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E2E2)),
+        border: Border.all(color: const IkoTheme.hairline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -420,14 +427,14 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(icon, color: isLocked ? const Color(0xFFBDBDBD) : IkoTheme.textSecondary, size: 24),
+              Icon(icon, color: isLocked ? const IkoTheme.textTertiary : IkoTheme.textSecondary, size: 24),
               Text(
                 '$current/$total',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: isLocked ? const Color(0xFFBDBDBD) : IkoTheme.textSecondary,
+                  color: isLocked ? const IkoTheme.textTertiary : IkoTheme.textSecondary,
                 ),
               ),
             ],
@@ -438,7 +445,7 @@ class _QuestsScreenState extends ConsumerState<QuestsScreen> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: isLocked ? const Color(0xFFBDBDBD) : IkoTheme.primary,
+              color: isLocked ? const IkoTheme.textTertiary : IkoTheme.primary,
             ),
           ),
           const SizedBox(height: 12),

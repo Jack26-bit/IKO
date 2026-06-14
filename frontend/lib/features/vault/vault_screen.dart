@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/theme.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../dashboard/sidebar_drawer.dart';
@@ -100,10 +101,10 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           ),
         ),
         const SizedBox(width: 8),
-        const Text(
+        Text(
           'IKO',
           style: TextStyle(
-            fontFamily: 'Playfair Display',
+            fontFamily: IkoTheme.serifFamily,
             fontSize: 24,
             fontWeight: FontWeight.w700,
             color: IkoTheme.primary,
@@ -145,8 +146,8 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
               alignment: Alignment.center,
               child: Text(
                 '${user.level}',
-                style: const TextStyle(
-                  fontFamily: 'Inter',
+                style: TextStyle(
+                  fontFamily: IkoTheme.sansFamily,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -158,8 +159,8 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
         const SizedBox(height: 16),
         Text(
           user.rpgClass.toUpperCase(),
-          style: const TextStyle(
-            fontFamily: 'Geist',
+          style: TextStyle(
+            fontFamily: IkoTheme.monoFamily,
             fontSize: 10,
             fontWeight: FontWeight.w700,
             letterSpacing: 2,
@@ -169,8 +170,8 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
         const SizedBox(height: 8),
         Text(
           user.username,
-          style: const TextStyle(
-            fontFamily: 'Playfair Display',
+          style: TextStyle(
+            fontFamily: IkoTheme.serifFamily,
             fontSize: 32,
             fontWeight: FontWeight.w700,
             color: IkoTheme.primary,
@@ -216,8 +217,8 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           const SizedBox(width: 8),
           Text(
             text,
-            style: const TextStyle(
-              fontFamily: 'Geist',
+            style: TextStyle(
+              fontFamily: IkoTheme.monoFamily,
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: IkoTheme.primary,
@@ -248,10 +249,10 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Attributes',
                 style: TextStyle(
-                  fontFamily: 'Playfair Display',
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: IkoTheme.primary,
@@ -261,7 +262,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          const Divider(color: Color(0xFFE2E2E2)),
+          const Divider(color: IkoTheme.hairline),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -289,8 +290,8 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontFamily: 'Geist',
+          style: TextStyle(
+            fontFamily: IkoTheme.monoFamily,
             fontSize: 10,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.5,
@@ -300,8 +301,8 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
         const SizedBox(height: 4),
         Text(
           value.toString(),
-          style: const TextStyle(
-            fontFamily: 'Playfair Display',
+          style: TextStyle(
+            fontFamily: IkoTheme.serifFamily,
             fontSize: 24,
             fontWeight: FontWeight.w700,
             color: IkoTheme.primary,
@@ -341,10 +342,10 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Recent',
                 style: TextStyle(
-                  fontFamily: 'Playfair Display',
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: IkoTheme.primary,
@@ -354,7 +355,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          const Divider(color: Color(0xFFE2E2E2)),
+          const Divider(color: IkoTheme.hairline),
           const SizedBox(height: 16),
           if (recentQuests.isEmpty)
             const Text('No recent activity.', style: TextStyle(color: IkoTheme.textSecondary))
@@ -378,7 +379,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
                 height: 6,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isPrimary ? IkoTheme.primary : const Color(0xFFE2E2E2),
+                  color: isPrimary ? IkoTheme.primary : const IkoTheme.hairline,
                 ),
               ),
               const SizedBox(width: 12),
@@ -398,7 +399,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           Text(
             value,
             style: TextStyle(
-              fontFamily: 'Geist',
+              fontFamily: IkoTheme.monoFamily,
               fontSize: 10,
               fontWeight: FontWeight.w600,
               color: isPrimary ? IkoTheme.primary : IkoTheme.textSecondary,
@@ -410,7 +411,10 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
   }
 
   Widget _buildHallOfRecordsSection(int longestStreak, int clarityScore) {
-    return Container(
+    return InkWell(
+      onTap: () => GoRouter.of(context).go('/achievements'),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: IkoTheme.surfaceContainerLowest,
@@ -429,20 +433,24 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Hall of Records',
                 style: TextStyle(
-                  fontFamily: 'Playfair Display',
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: IkoTheme.primary,
                 ),
               ),
-              Icon(Icons.emoji_events_outlined, color: IkoTheme.textSecondary),
+              Row(children: [
+                Text('View all', style: TextStyle(fontFamily: IkoTheme.monoFamily, fontSize: 11, letterSpacing: 1.6, color: IkoTheme.textSecondary)),
+                const SizedBox(width: 6),
+                const Icon(Icons.arrow_forward, size: 14, color: IkoTheme.textSecondary),
+              ]),
             ],
           ),
           const SizedBox(height: 8),
-          const Divider(color: Color(0xFFE2E2E2)),
+          const Divider(color: IkoTheme.hairline),
           const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -461,6 +469,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           ),
         ],
       ),
+      ),
     );
   }
 
@@ -474,11 +483,11 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
             shape: BoxShape.circle,
             color: IkoTheme.surfaceContainer,
             border: Border.all(
-              color: isLocked ? Colors.transparent : const Color(0xFFE2E2E2),
+              color: isLocked ? Colors.transparent : const IkoTheme.hairline,
             ),
           ),
           child: isLocked
-              ? const Icon(Icons.lock_outline, color: Color(0xFFBDBDBD))
+              ? const Icon(Icons.lock_outline, color: IkoTheme.textTertiary)
               : const Center(child: Text('•', style: TextStyle(fontSize: 24, color: IkoTheme.textSecondary))),
         ),
         const SizedBox(height: 12),
@@ -488,7 +497,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: isLocked ? const Color(0xFFBDBDBD) : IkoTheme.primary,
+            color: isLocked ? const IkoTheme.textTertiary : IkoTheme.primary,
           ),
         ),
         const SizedBox(height: 4),
@@ -497,7 +506,7 @@ class _VaultScreenState extends ConsumerState<VaultScreen> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 10,
-            color: isLocked ? const Color(0xFFBDBDBD) : IkoTheme.textSecondary,
+            color: isLocked ? const IkoTheme.textTertiary : IkoTheme.textSecondary,
           ),
         ),
       ],

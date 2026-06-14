@@ -57,10 +57,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
                         const SizedBox(height: 16),
                         _buildTopAppBar(context),
                         const SizedBox(height: 24),
-                        const Text(
+                        Text(
                           'Analytics Overview',
                           style: TextStyle(
-                            fontFamily: 'Playfair Display',
+                            fontFamily: IkoTheme.serifFamily,
                             fontSize: 32,
                             fontWeight: FontWeight.w700,
                             color: IkoTheme.primary,
@@ -122,10 +122,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
           ),
         ),
         const SizedBox(width: 8),
-        const Text(
+        Text(
           'IKO',
           style: TextStyle(
-            fontFamily: 'Playfair Display',
+            fontFamily: IkoTheme.serifFamily,
             fontSize: 24,
             fontWeight: FontWeight.w700,
             color: IkoTheme.primary,
@@ -155,10 +155,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'TOTAL XP EARNED',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -171,8 +171,8 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
           const SizedBox(height: 12),
           Text(
             '$xp',
-            style: const TextStyle(
-              fontFamily: 'Playfair Display',
+            style: TextStyle(
+              fontFamily: IkoTheme.serifFamily,
               fontSize: 40,
               fontWeight: FontWeight.w700,
               color: IkoTheme.primary,
@@ -183,10 +183,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
             children: [
               Icon(Icons.trending_up, size: 16, color: IkoTheme.primary),
               const SizedBox(width: 4),
-              const Text(
+              Text(
                 '+14%',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: IkoTheme.primary,
@@ -227,10 +227,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'FOCUS STREAK',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -247,18 +247,18 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
             children: [
               Text(
                 '$streak',
-                style: const TextStyle(
-                  fontFamily: 'Playfair Display',
+                style: TextStyle(
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 40,
                   fontWeight: FontWeight.w700,
                   color: IkoTheme.primary,
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'Days',
                 style: TextStyle(
-                  fontFamily: 'Playfair Display',
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: IkoTheme.textSecondary,
@@ -301,10 +301,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'PRODUCTIVITY INDEX',
                 style: TextStyle(
-                  fontFamily: 'Geist',
+                  fontFamily: IkoTheme.monoFamily,
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,
@@ -321,8 +321,8 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
             children: [
               Text(
                 '$index',
-                style: const TextStyle(
-                  fontFamily: 'Playfair Display',
+                style: TextStyle(
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 48,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -371,7 +371,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
                     Text(
                       'XP Growth\nTrajectory',
                       style: TextStyle(
-                        fontFamily: 'Playfair Display',
+                        fontFamily: IkoTheme.serifFamily,
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: IkoTheme.primary,
@@ -412,7 +412,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
             child: CustomPaint(
               painter: AreaChartPainter(
                 lineColor: IkoTheme.primary,
-                fillColor: const Color(0xFFE2E2E2).withValues(alpha: 0.5),
+                fillColor: const IkoTheme.hairline.withValues(alpha: 0.5),
               ),
             ),
           ),
@@ -442,7 +442,7 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
       child: Text(
         text,
         style: TextStyle(
-          fontFamily: 'Geist',
+          fontFamily: IkoTheme.monoFamily,
           fontSize: 10,
           fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
           color: isSelected ? IkoTheme.primary : IkoTheme.textSecondary,
@@ -468,10 +468,10 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Goal Completion',
             style: TextStyle(
-              fontFamily: 'Playfair Display',
+              fontFamily: IkoTheme.serifFamily,
               fontSize: 24,
               fontWeight: FontWeight.w600,
               color: IkoTheme.primary,
@@ -498,8 +498,8 @@ class _GrowthScreenState extends ConsumerState<GrowthScreen> {
               ),
               Text(
                 '$overall%',
-                style: const TextStyle(
-                  fontFamily: 'Playfair Display',
+                style: TextStyle(
+                  fontFamily: IkoTheme.serifFamily,
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
                   color: IkoTheme.primary,

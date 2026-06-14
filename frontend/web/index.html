@@ -1,46 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="IKO — A gamified operating system for your real life. Turn habits and goals into quests, level up, and master your days.">
+  <meta name="keywords" content="IKO, productivity, gamified, RPG, habits, quests, focus, discipline">
+  <meta name="theme-color" content="#0B0B0C">
 
   <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="iko">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="IKO">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="IKO — Master Path">
+  <meta property="og:description" content="Turn your real-life habits into quests. Level up your discipline.">
+  <meta property="og:type" content="website">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>iko</title>
+  <title>IKO — Master Path</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #F6F4EF; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    #iko-splash {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: #F6F4EF; z-index: 9999; transition: opacity .6s ease;
+    }
+    #iko-splash .mark {
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 48px; font-weight: 700; letter-spacing: 0.32em;
+      color: #0B0B0C; padding-left: 0.32em;
+    }
+    #iko-splash .rule {
+      width: 24px; height: 1px; background: #0B0B0C; opacity: .35; margin-top: 18px;
+      animation: ikoPulse 1.6s ease-in-out infinite;
+    }
+    @keyframes ikoPulse {
+      0%, 100% { transform: scaleX(.6); opacity: .35; }
+      50%      { transform: scaleX(1.6); opacity: .9; }
+    }
+    #iko-splash .col { display: flex; flex-direction: column; align-items: center; }
+    .iko-fade-out { opacity: 0 !important; pointer-events: none; }
+  </style>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+  <div id="iko-splash">
+    <div class="col">
+      <div class="mark">IKO</div>
+      <div class="rule"></div>
+    </div>
+  </div>
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var el = document.getElementById('iko-splash');
+      if (!el) return;
+      el.classList.add('iko-fade-out');
+      setTimeout(function(){ el && el.parentNode && el.parentNode.removeChild(el); }, 700);
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
